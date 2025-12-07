@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanso Threads | Minimalist Urban Wear</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Reggae One y Noto Sans (como alternativa a Aileron) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;700&family=Reggae+One&display=swap" rel="stylesheet">
+    
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kanso: {
+                            bg: '#FFFFFF', // Blanco Fondo
+                            dark: '#000000', // Negro Texto
+                            yellow: '#F9B233', // Amarillo Botones
+                            brown: '#B0836B', // Marrón Detalles
+                            red: '#D32F2F', // Rojo Acento/Botón Inicial
+                            blue: '#1e293b', // Azul oscuro (fondo alternativo sugerido en PDF)
+                            gray: '#f3f4f6'
+                        }
+                    },
+                    fontFamily: {
+                        title: ['"Reggae One"', 'cursive'],
+                        body: ['"Noto Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos personalizados para transiciones suaves */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Ocultar barra de desplazamiento en elementos scrollables pero mantener funcionalidad */
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-white text-kanso-dark font-body antialiased flex flex-col min-h-screen">
+
+    <!-- ENCABEZADO / NAVBAR -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-kanso-brown/20">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" onclick="showTab('home')" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 bg-kanso-red rounded-full flex items-center justify-center text-white font-title text-xl shadow-md group-hover:bg-kanso-dark transition-colors">
+                    K
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-title text-2xl leading-none">Kanso</span>
+                    <span class="text-xs tracking-[0.2em] text-kanso-brown">THREADS</span>
+                </div>
+            </a>
+
+            <!-- Menú Escritorio -->
+            <nav class="hidden md:flex gap-8 items-center">
+                <button onclick="showTab('home')" class="nav-link text-kanso-dark hover:text-kanso-yellow font-bold transition-colors border-b-2 border-transparent hover:border-kanso-yellow">INICIO</button>
+                <button onclick="showTab('shop')" class="nav-link text-kanso-dark hover:text-kanso-yellow font-bold transition-colors border-b-2 border-transparent hover:border-kanso-yellow">TIENDA</button>
+                <button onclick="showTab('support')" class="nav-link text-kanso-dark hover:text-kanso-yellow font-bold transition-colors border-b-2 border-transparent hover:border-kanso-yellow">SOPORTE</button>
+            </nav>
+
+            <!-- Iconos de Utilidad -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleCart()" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+                    <i data-lucide="shopping-bag" class="w-6 h-6 text-kanso-dark"></i>
+                    <span id="cart-count" class="absolute top-0 right-0 bg-kanso-yellow text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-sm transform scale-0 transition-transform duration-200">0</span>
+                </button>
+                <!-- Menú Móvil Trigger -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 p-4 absolute w-full shadow-lg z-40">
+            <div class="flex flex-col gap-4">
+                <button onclick="showTab('home'); toggleMobileMenu()" class="text-left font-bold py-2 border-b border-gray-100">INICIO</button>
+                <button onclick="showTab('shop'); toggleMobileMenu()" class="text-left font-bold py-2 border-b border-gray-100">TIENDA</button>
+                <button onclick="showTab('support'); toggleMobileMenu()" class="text-left font-bold py-2">SOPORTE</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="flex-grow">
+        
+        <!-- PESTAÑA: INICIO -->
+        <section id="home" class="tab-content active fade-in">
+            <!-- Banner Hero -->
+            <div class="relative w-full h-[80vh] bg-kanso-blue overflow-hidden flex items-center justify-center text-center">
+                <!-- Imagen de fondo con overlay -->
+                <img src="https://images.unsplash.com/photo-1542060748-10c2872b2010?q=80&w=1920&auto=format&fit=crop" alt="Estilo Urbano Japonés" class="absolute inset-0 w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-1000">
+                <div class="absolute inset-0 bg-gradient-to-t from-kanso-blue/90 to-transparent"></div>
+                
+                <div class="relative z-10 px-6 max-w-4xl">
+                    <span class="inline-block py-1 px-3 border border-white/30 text-white text-xs tracking-widest mb-4">ESTÉTICA WABI-SABI</span>
+                    <h1 class="font-title text-5xl md:text-7xl text-white mb-6 leading-tight">Simplicidad en cada <span class="text-kanso-yellow">hilo</span></h1>
+                    <p class="text-gray-300 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light">
+                        Una fusión de siluetas limpias, colores tierra y cortes inspirados en el kimono urbano. La belleza de lo imperfecto.
+                    </p>
+                    <button onclick="showTab('shop')" class="bg-kanso-red text-white hover:bg-white hover:text-kanso-red px-10 py-4 font-bold rounded-none border border-transparent hover:border-kanso-red transition-all duration-300 transform hover:-translate-y-1 shadow-lg">
+                        VER COLECCIÓN
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sección Conceptual -->
+            <div class="container mx-auto px-4 py-20">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <h2 class="font-title text-4xl text-kanso-dark">La Filosofía <span class="text-kanso-brown">Kanso</span></h2>
+                        <div class="w-20 h-1 bg-kanso-yellow"></div>
+                        <p class="text-gray-600 leading-relaxed">
+                            "Kanso" es un principio estético japonés que significa simplicidad o eliminación de lo no esencial. 
+                            Nuestra línea gráfica refleja el minimalismo urbano, utilizando colores planos y formas que evocan 
+                            la tranquilidad de los paisajes tradicionales mezclados con la modernidad de la ciudad.
+                        </p>
+                        <div class="grid grid-cols-3 gap-4 pt-4">
+                            <div class="text-center p-4 bg-gray-50 rounded border border-gray-100">
+                                <i data-lucide="scissors" class="w-8 h-8 mx-auto mb-2 text-kanso-brown"></i>
+                                <span class="text-xs font-bold">CORTES LIMPIOS</span>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded border border-gray-100">
+                                <i data-lucide="palette" class="w-8 h-8 mx-auto mb-2 text-kanso-brown"></i>
+                                <span class="text-xs font-bold">TONOS TIERRA</span>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded border border-gray-100">
+                                <i data-lucide="leaf" class="w-8 h-8 mx-auto mb-2 text-kanso-brown"></i>
+                                <span class="text-xs font-bold">WABI-SABI</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -top-4 -left-4 w-full h-full border-2 border-kanso-yellow rounded-lg"></div>
+                        <img src="https://images.unsplash.com/photo-1617387399589-982d61483844?q=80&w=800&auto=format&fit=crop" alt="Detalle Ropa" class="relative z-10 w-full h-96 object-cover rounded-lg shadow-xl filter contrast-125">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PESTAÑA: TIENDA -->
+        <section id="shop" class="tab-content fade-in">
+            <!-- Banner Tienda -->
+            <div class="bg-gray-100 py-12 border-b border-gray-200">
+                <div class="container mx-auto px-4 text-center">
+                    <h2 class="font-title text-4xl mb-2">Nuestra Colección</h2>
+                    <p class="text-gray-500">Explora prendas diseñadas para la vida urbana</p>
+                </div>
+            </div>
+
+            <!-- Filtros y Grid -->
+            <div class="container mx-auto px-4 py-12">
+                <!-- Grid de Productos (Se llena con JS) -->
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <!-- Los productos se inyectarán aquí -->
+                </div>
+            </div>
+        </section>
+
+        <!-- PESTAÑA: SOPORTE -->
+        <section id="support" class="tab-content fade-in">
+             <div class="container mx-auto px-4 py-16 max-w-5xl">
+                <div class="text-center mb-16">
+                    <h2 class="font-title text-4xl mb-4">Centro de Ayuda</h2>
+                    <p class="text-gray-600 max-w-xl mx-auto">¿Tienes dudas sobre tu talla o el envío? Estamos aquí para ayudarte mediante asistencia personalizada.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- Formulario -->
+                    <div class="bg-gray-50 p-8 rounded-xl border border-gray-100 shadow-sm">
+                        <h3 class="font-title text-2xl mb-6 flex items-center gap-2">
+                            <i data-lucide="message-square" class="text-kanso-yellow"></i> Contáctanos
+                        </h3>
+                        <form class="space-y-4" onsubmit="event.preventDefault(); alert('Mensaje enviado. Te contactaremos pronto.');">
+                            <div>
+                                <label class="block text-sm font-bold mb-1 text-gray-700">Nombre</label>
+                                <input type="text" class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-kanso-yellow" placeholder="Tu nombre">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-1 text-gray-700">Email</label>
+                                <input type="email" class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-kanso-yellow" placeholder="tucorreo@ejemplo.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-1 text-gray-700">Mensaje</label>
+                                <textarea class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-kanso-yellow h-32" placeholder="¿En qué podemos ayudarte?"></textarea>
+                            </div>
+                            <button class="w-full bg-kanso-dark text-white font-bold py-3 rounded hover:bg-gray-800 transition-colors">ENVIAR MENSAJE</button>
+                        </form>
+                    </div>
+
+                    <!-- Info y Redes -->
+                    <div class="space-y-8">
+                        <!-- Redes Sociales -->
+                        <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                            <h3 class="font-title text-xl mb-4">Síguenos</h3>
+                            <div class="flex gap-4">
+                                <a href="#" class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-kanso-yellow hover:text-white transition-colors">
+                                    <i data-lucide="instagram"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-kanso-yellow hover:text-white transition-colors">
+                                    <i data-lucide="twitter"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-kanso-yellow hover:text-white transition-colors">
+                                    <i data-lucide="facebook"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Reseñas -->
+                        <div>
+                            <h3 class="font-title text-xl mb-4">Lo que dicen nuestros clientes</h3>
+                            <div class="space-y-4">
+                                <div class="p-4 border-l-4 border-kanso-yellow bg-gray-50">
+                                    <div class="flex text-kanso-yellow mb-2">★★★★★</div>
+                                    <p class="text-sm italic text-gray-600">"La chaqueta Haori es increíble. La calidad de la tela y el corte minimalista es justo lo que buscaba."</p>
+                                    <p class="text-xs font-bold mt-2 text-kanso-brown">- Sofia M.</p>
+                                </div>
+                                <div class="p-4 border-l-4 border-kanso-brown bg-gray-50">
+                                    <div class="flex text-kanso-yellow mb-2">★★★★☆</div>
+                                    <p class="text-sm italic text-gray-600">"Envío rápido y la atención por WhatsApp fue super amable. Definitivamente compraré de nuevo."</p>
+                                    <p class="text-xs font-bold mt-2 text-kanso-brown">- Carlos R.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-kanso-dark text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8 mb-12 border-b border-gray-800 pb-12">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-kanso-yellow rounded-full flex items-center justify-center text-kanso-dark font-title font-bold">K</div>
+                        <span class="font-title text-xl">Kanso Threads</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">Moda urbana minimalista inspirada en la estética japonesa moderna.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-kanso-yellow">Navegación</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" onclick="showTab('home')" class="hover:text-white">Inicio</a></li>
+                        <li><a href="#" onclick="showTab('shop')" class="hover:text-white">Tienda</a></li>
+                        <li><a href="#" onclick="showTab('support')" class="hover:text-white">Soporte</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-kanso-yellow">Legal</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white">Términos y Condiciones</a></li>
+                        <li><a href="#" class="hover:text-white">Política de Privacidad</a></li>
+                        <li><a href="#" class="hover:text-white">Devoluciones</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center text-gray-600 text-sm flex flex-col md:flex-row justify-between items-center">
+                <p>&copy; 2024 Kanso Threads. Sayonara!</p>
+                <div class="flex items-center gap-2 mt-4 md:mt-0">
+                    <span>Hecho con</span>
+                    <i data-lucide="heart" class="w-4 h-4 text-kanso-red fill-current"></i>
+                    <span>estilo Wabi-Sabi</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL CARRITO -->
+    <div id="cart-modal" class="fixed inset-0 z-[60] hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        
+        <!-- Panel Lateral -->
+        <div class="absolute top-0 right-0 w-full md:w-[400px] h-full bg-white shadow-2xl flex flex-col transform transition-transform duration-300 translate-x-full" id="cart-panel">
+            <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                <h2 class="font-title text-xl">Tu Bolsa (<span id="cart-qty-display">0</span>)</h2>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-kanso-red">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            
+            <!-- Items del carrito -->
+            <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4">
+                <!-- Se llena con JS -->
+                <div class="text-center text-gray-400 mt-20">
+                    <i data-lucide="shopping-bag" class="w-16 h-16 mx-auto mb-4 opacity-20"></i>
+                    <p>Tu bolsa está vacía.</p>
+                    <button onclick="toggleCart(); showTab('shop')" class="mt-4 text-kanso-yellow underline font-bold">Ir a la tienda</button>
+                </div>
+            </div>
+
+            <!-- Footer del carrito -->
+            <div class="p-5 border-t border-gray-100 bg-gray-50">
+                <div class="flex justify-between items-center mb-4 text-xl font-bold">
+                    <span>Total:</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+                <p class="text-xs text-gray-500 mb-4 text-center">
+                    Al confirmar, serás redirigido a WhatsApp para finalizar tu compra con un asistente.
+                </p>
+                <button onclick="checkoutWhatsApp()" class="w-full bg-kanso-yellow text-kanso-dark font-bold py-4 rounded shadow-lg hover:bg-yellow-400 transition-colors flex items-center justify-center gap-2">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    CONFIRMAR PEDIDO
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICACIÓN TOAST -->
+    <div id="toast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-kanso-dark text-white px-6 py-3 rounded-full shadow-xl translate-y-20 transition-transform duration-300 z-[70] flex items-center gap-3">
+        <i data-lucide="check-circle" class="text-kanso-yellow"></i>
+        <span id="toast-message">Producto agregado</span>
+    </div>
+
+    <script>
+        // --- CONFIGURACIÓN DE PRODUCTOS (EDITAR AQUÍ) ---
+        const products = [
+            {
+                id: 1,
+                name: "Camiseta Skate Cat",
+                price: 25.00,
+                category: "Camisetas",
+                image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=600&auto=format&fit=crop",
+                desc: "Algodón orgánico con estampado minimalista trasero."
+            },
+            {
+                id: 2,
+                name: "Chaqueta Haori Urbana",
+                price: 56.00,
+                category: "Abrigos",
+                image: "https://images.unsplash.com/photo-1551488852-080175b94320?q=80&w=600&auto=format&fit=crop",
+                desc: "Corte tradicional japonés adaptado a la ciudad. Color gris neutro."
+            },
+            {
+                id: 3,
+                name: "Pantalón Cargo Wabi",
+                price: 45.00,
+                category: "Pantalones",
+                image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=600&auto=format&fit=crop",
+                desc: "Pantalones anchos de lino, cómodos y resistentes."
+            },
+            {
+                id: 4,
+                name: "Sudadera Monte Fuji",
+                price: 48.00,
+                category: "Sudaderas",
+                image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600&auto=format&fit=crop",
+                desc: "Bordado de alta calidad. Interior afelpado."
+            },
+            {
+                id: 5,
+                name: "Blazer Tweed Cuadros",
+                price: 65.00,
+                category: "Abrigos",
+                image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=600&auto=format&fit=crop",
+                desc: "Elegancia informal para el otoño. Forro completo."
+            },
+            {
+                id: 6,
+                name: "Top Acanalado Zen",
+                price: 19.00,
+                category: "Tops",
+                image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=600&auto=format&fit=crop",
+                desc: "Básico esencial de verano. Cuello cuadrado."
+            }
+        ];
+
+        // --- ESTADO DEL CARRITO ---
+        let cart = [];
+
+        // --- INICIALIZACIÓN ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            lucide.createIcons();
+            
+            // Animación de entrada para el grid
+            const grid = document.getElementById('product-grid');
+            setTimeout(() => {
+                grid.classList.add('opacity-100');
+            }, 300);
+        });
+
+        // --- NAVEGACIÓN ---
+        function showTab(tabId) {
+            // Ocultar todas
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Mostrar seleccionada
+            const selected = document.getElementById(tabId);
+            selected.classList.add('active');
+            
+            // Scroll al top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // --- LÓGICA DE TIENDA ---
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = products.map(product => `
+                <div class="group bg-white rounded-lg overflow-hidden border border-transparent hover:border-gray-200 hover:shadow-xl transition-all duration-300">
+                    <div class="relative overflow-hidden h-80 bg-gray-100">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <button onclick="addToCart(${product.id})" class="absolute bottom-4 right-4 bg-white text-kanso-dark p-3 rounded-full shadow-md hover:bg-kanso-yellow hover:scale-110 transition-all transform translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
+                            <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                        </button>
+                        <div class="absolute top-4 left-4 bg-kanso-dark text-white text-xs font-bold px-2 py-1 rounded-sm uppercase tracking-wider opacity-80">
+                            ${product.category}
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg leading-tight group-hover:text-kanso-brown transition-colors">${product.name}</h3>
+                            <span class="font-title text-lg text-kanso-red">$${product.price}</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-2">${product.desc}</p>
+                        <button onclick="addToCart(${product.id})" class="w-full border border-kanso-dark text-kanso-dark font-bold py-2 rounded hover:bg-kanso-dark hover:text-white transition-colors text-sm uppercase tracking-wide">
+                            Agregar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons(); // Recargar iconos
+        }
+
+        // --- LÓGICA DEL CARRITO ---
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            const panel = document.getElementById('cart-panel');
+            
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    panel.classList.remove('translate-x-full');
+                }, 10);
+            } else {
+                panel.classList.add('translate-x-full');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const existing = cart.find(item => item.id === id);
+
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast(`¡${product.name} agregado!`);
+            
+            // Efecto burbuja en el icono del carrito
+            const badge = document.getElementById('cart-count');
+            badge.classList.remove('scale-0');
+            badge.classList.add('scale-125');
+            setTimeout(() => badge.classList.remove('scale-125'), 200);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) removeFromCart(id);
+                else updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            const countEl = document.getElementById('cart-count');
+            const qtyDisplay = document.getElementById('cart-qty-display');
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const count = cart.reduce((sum, item) => sum + item.qty, 0);
+
+            countEl.innerText = count;
+            qtyDisplay.innerText = count;
+            totalEl.innerText = `$${total.toFixed(2)}`;
+
+            if (count > 0) {
+                countEl.classList.remove('scale-0');
+            } else {
+                countEl.classList.add('scale-0');
+            }
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-400 mt-20 fade-in">
+                        <i data-lucide="shopping-bag" class="w-16 h-16 mx-auto mb-4 opacity-20"></i>
+                        <p>Tu bolsa está vacía.</p>
+                        <button onclick="toggleCart(); showTab('shop')" class="mt-4 text-kanso-yellow underline font-bold">Ir a la tienda</button>
+                    </div>`;
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="flex gap-4 fade-in bg-white p-2 rounded-lg border border-gray-50">
+                        <img src="${item.image}" class="w-20 h-20 object-cover rounded bg-gray-100">
+                        <div class="flex-1 flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-sm text-kanso-dark">${item.name}</h4>
+                                <p class="text-xs text-gray-500">$${item.price} c/u</p>
+                            </div>
+                            <div class="flex items-center justify-between mt-2">
+                                <div class="flex items-center border border-gray-300 rounded overflow-hidden">
+                                    <button onclick="changeQty(${item.id}, -1)" class="px-2 py-1 bg-gray-50 hover:bg-gray-200 text-xs">-</button>
+                                    <span class="px-2 text-xs font-bold w-6 text-center">${item.qty}</span>
+                                    <button onclick="changeQty(${item.id}, 1)" class="px-2 py-1 bg-gray-50 hover:bg-gray-200 text-xs">+</button>
+                                </div>
+                                <span class="font-bold text-kanso-brown">$${(item.price * item.qty).toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 self-start p-1">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+            lucide.createIcons();
+        }
+
+        // --- CHECKOUT WHATSAPP ---
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                showToast("Tu carrito está vacío", true);
+                return;
+            }
+
+            // NÚMERO ACTUALIZADO
+            const phoneNumber = "584144491745"; 
+            
+            let message = "Hola Kanso Threads! 👋\nQuiero confirmar el siguiente pedido:\n\n";
+            
+            cart.forEach(item => {
+                message += `• ${item.qty}x ${item.name} - $${(item.price * item.qty).toFixed(2)}\n`;
+            });
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            message += `\n*TOTAL A PAGAR: $${total.toFixed(2)}*\n\n`;
+            message += "¿Me indican los pasos para el pago y envío? Gracias.";
+
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            // Abrir en nueva pestaña
+            window.open(url, '_blank');
+        }
+
+        // --- UTILS ---
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            
+            msgEl.innerText = msg;
+            if(isError) {
+                toast.classList.replace('bg-kanso-dark', 'bg-red-600');
+            } else {
+                toast.classList.replace('bg-red-600', 'bg-kanso-dark');
+            }
+
+            toast.classList.remove('translate-y-20');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20');
+            }, 3000);
+        }
+
+    </script>
+</body>
+</html>
+
+
